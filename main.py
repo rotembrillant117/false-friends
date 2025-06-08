@@ -15,66 +15,6 @@ from tokenizers.models import BPE, Unigram, WordPiece, WordLevel
 from tokenizers.trainers import BpeTrainer, UnigramTrainer, WordPieceTrainer, WordLevelTrainer
 from tokenizers.pre_tokenizers import Whitespace
 
-
-def analyze_tokenization(tokenizers_list, ff_data, l1, l2, algo, dir):
-    """
-    This function computes an analysis on how different tokenizers split False Friends words
-    :param tokenizers_list: a list of tokenizers, [l1 tokenizer, l2 tokenizer, l1+l2 tokenizer]
-    :param ff_data: the false friends data
-    :param l1: the first language
-    :param l2: the second language
-    :param algo: the name of the algorithm
-    :param dir: the directory to save the results figure
-    :return:
-    """
-    # init cases with value 0
-    tokenization_cases = ["same_splits", f"{l1}_t==multi_t", f"{l2}_t==multi_t", "different_splits", f"{l1}_t=={l2}_t"]
-    num_tokens_diff = dict.fromkeys(tokenization_cases, 0)
-    for i in range(len(ff_data)):
-        ff = ff_data[i]["False Friend"]
-        word_tokenization = []
-        num_tokens = []
-        for t in tokenizers_list:
-            if "SAGE" in algo:
-                res = t.tokenize_to_encoded_str(ff)
-            else:
-                res = t.encode(ff).tokens
-            word_tokenization.append(res)
-            num_tokens.append(len(res))
-        # Same splits throughout all tokenizers
-        if word_tokenization[0] == word_tokenization[2] and word_tokenization[1] == word_tokenization[2]:
-            num_tokens_diff["same_splits"] += 1
-        # Same tokenization between language1 and multilingual tokenizer
-        elif word_tokenization[0] == word_tokenization[2]:
-            num_tokens_diff[f"{l1}_t==multi_t"] += 1
-        # Same tokenization between language2 and multilingual tokenizer
-        elif word_tokenization[1] == word_tokenization[2]:
-            num_tokens_diff[f"{l2}_t==multi_t"] += 1
-        # All different tokenization
-        elif word_tokenization[0] != word_tokenization[1] and word_tokenization[0] != word_tokenization[2] and \
-                word_tokenization[1] != word_tokenization[2]:
-            num_tokens_diff["different_splits"] += 1
-        # Same tokenization between language1 and langauge2, but different from Multi tokenizer
-        elif word_tokenization[0] == word_tokenization[1]:
-            num_tokens_diff[f"{l1}_t=={l2}_t"] += 1
-    
-    num_words = len(ff_data)
-    fig_save_path = f"{dir}/tokenization_cases_{l1}_{l2}_{algo}.png"
-    title = f"Tokenization Cases:{l1}, {l2}\nAlgo:{algo}\nNum ff: {num_words}"
-    
-    plt.figure(figsize=(8, 10))
-    print(num_tokens_diff.items())
-    x_axis = list(num_tokens_diff.keys())
-    y_axis = [v for v in list(num_tokens_diff.values())]
-    plt.bar(x_axis, y_axis)
-    plt.xticks(rotation=30, fontsize=12)
-    plt.xlabel("Tokenization Splits")
-    plt.ylabel("Amount of Tokenization Case")
-    plt.title(title, fontsize=15)
-    plt.savefig(fig_save_path)
-    plt.show()
-
-
 def create_multi_text_file(path1, path2, file_name, num_rows, seed=42):
     """
     Creates a .txt file that combines two different text files by randomly sampling half of the lines
@@ -138,8 +78,9 @@ def get_sage_tokenizer(algo, schedule, initial_vocab_size, final_vocab_size, cor
     :param corpus_file_path:
     :param vocab_file_path:
     :param experiment_name:
-    :return:
+    :return: "BPE_SAGE
     """
+    
     vocab_builder_tokenizer = algo.split("_")[0]
     tokenizer = get_SP_tokenizer(vocab_builder_tokenizer, initial_vocab_size, corpus_file_path)
     vocab = sorted(list(tokenizer.get_vocab().keys()))
@@ -303,13 +244,13 @@ if __name__ == '__main__':
                 save_tokenizer(l1_l2_tokenizer, f"{cwd}/experiments/{vocab_size}/{l1}_{l2}/{l1}_{l2}_{algo}.json")
 
 
-            # Read False Friends data
-            with open(ff_file_path, 'r', encoding='utf-8') as f:
-                # list of dictionaries
-                ff_data = list(csv.DictReader(f))
-
-            analyze_tokenization([l1_tokenizers[algo], l2_tokenizer, l1_l2_tokenizer], ff_data, l1, l2,
-                                 algo, f"{cwd}/analysis/{vocab_size}/{l1}_{l2}/graphs")
-            # write_tokenization_split([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data, l1, l2, algo, f"{cwd}/analysis/{l1}_{l2}/tokenization/{l1}_{l2}_{algo}_ff.txt")
-            print(f"finished experiment {l1}_{l2}_{algo}")
+            # # Read False Friends data
+            # with open(ff_file_path, 'r', encoding='utf-8') as f:
+            #     # list of dictionaries
+            #     ff_data = list(csv.DictReader(f))
+            #
+            # analyze_tokenization([l1_tokenizers[algo], l2_tokenizer, l1_l2_tokenizer], ff_data, l1, l2,
+            #                      algo, f"{cwd}/analysis/{vocab_size}/{l1}_{l2}/graphs")
+            # # write_tokenization_split([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data, l1, l2, algo, f"{cwd}/analysis/{l1}_{l2}/tokenization/{l1}_{l2}_{algo}_ff.txt")
+            # print(f"finished experiment {l1}_{l2}_{algo}")
     
