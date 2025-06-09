@@ -1,0 +1,8 @@
+en_tokenizer, it_tokenizer, en_it_tokenizer
+['al', 'to']['alto']['al', 'to']
+['c', 'al', 'z', 'one']['cal', 'z', 'o', 'n', 'e']['cal', 'z', 'one']
+['ca', 's', 'in', 'o']['c', 'a', 'si', 'no']['ca', 's', 'in', 'o']
+['s', 'l', 'i', 'p']['s', 'l', 'i', 'p']['s', 'l', 'i', 'p']
+['ma', 'le']['ma', 'l', 'e']['m', 'al', 'e']
+['s', 'al', 'e']['sale']['s', 'al', 'e']
+['can', 'to']['cant', 'o']['can', 'to']

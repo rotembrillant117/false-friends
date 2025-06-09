@@ -1,0 +1,8 @@
+en_tokenizer, it_tokenizer, en_it_tokenizer
+['al', 'to']['a', 'l', 'to']['al', 'to']
+['cal', 'zone']['cal', 'zone']['cal', 'zone']
+['ca', 's', 'in', 'o']['cas', 'in', 'o']['ca', 'si', 'no']
+['s', 'lip']['s', 'l', 'i', 'p']['s', 'lip']
+['male']['male']['male']
+['s', 'al', 'e']['s', 'a', 'l', 'e']['s', 'al', 'e']
+['can', 'to']['canto']['can', 'to']

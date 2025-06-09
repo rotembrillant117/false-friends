@@ -1,0 +1,6 @@
+de,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_de\deu_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\de_ff.csv
+es,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_es\spa_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\spanish_ff.csv
+fr,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_fr\fra_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\french_ff.csv
+it,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_it\ita_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\italian_ff.csv
+ro,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_ro\ron_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\romanian_ff.csv
+se,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\training_data\en_se\swe_wikipedia_2021_300K-sentences.txt,C:\Users\halor\Desktop\Masters_degree\Melel\thesisV01\ff_data\swedish_ff.csv

@@ -1,0 +1,23 @@
+{
+  "current_step_vocab_size": 4000,
+  "total_tokens": 11246383,
+  "total_triples": 26183672,
+  "current_active_vocab_size": 8138,
+  "current_inactive_vocab_size": 35,
+  "neg_loss": 2282,
+  "zero_loss": 0,
+  "pos_loss": 5856,
+  "target_vocab_size": 3000,
+  "num_tokens_to_prune": 5138,
+  "ablated_sizes": {
+    "2": 3500088,
+    "3": 905000,
+    "5": 90620,
+    "4": 282099,
+    "6": 25961,
+    "7": 6058,
+    "8": 632,
+    "9": 69,
+    "10": 17
+  }
+}
