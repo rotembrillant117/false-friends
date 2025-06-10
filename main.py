@@ -129,49 +129,52 @@ def add_single_bytes(vocab):
             vocab.append(t)
     return vocab
 
+def create_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(f"created directory {path}")
+
 def create_experiments_dir(wd, l1, algorithms, experiments, vocab_size):
+    """
+    This function creates directories and subdirectories for experiments
+    :param wd: the working directory
+    :param l1: l1 language
+    :param algorithms: list of algorithms
+    :param experiments: list of experiments [(l2, train_data_path, ff_data_path), ...]
+    :param vocab_size: the tokenizer vocab size
+    :return:
+    """
+    base_results = os.path.join(wd, "results")
+    base_analysis = os.path.join(wd, "analysis")
+    base_experiments = os.path.join(wd, "experiments")
+
+    # Create main directories
+    create_dir(base_analysis)
+    create_dir(os.path.join(base_analysis, str(vocab_size)))
+
+    create_dir(base_experiments)
+    create_dir(os.path.join(base_experiments, str(vocab_size)))
+    create_dir(os.path.join(base_experiments, str(vocab_size), l1))
+
+    # Create results dirs for l1 and algorithms with "SAGE"
     for algo in algorithms:
         if "SAGE" in algo:
-            if not os.path.exists(f"{wd}/results/{l1}_{algo}_{vocab_size}"):
-                os.mkdir(f"{wd}/results/{l1}_{algo}_{vocab_size}")
-                print(f"created directory {wd}/results/{l1}_{algo}_{vocab_size}")
-    if not os.path.exists(f"{wd}/analysis"):
-        os.mkdir(f"{wd}/analysis")
-        print(f"created directory {wd}/analysis")
-    if not os.path.exists(f"{wd}/analysis/{vocab_size}"):
-        os.mkdir(f"{wd}/analysis/{vocab_size}")
-        print(f"created directory {wd}/analysis/{vocab_size}")
-    if not os.path.exists(f"{wd}/experiments"):
-        os.mkdir(f"{wd}/experiments")
-        print(f"created directory {wd}/experiments")
-    if not os.path.exists(f"{wd}/experiments/{vocab_size}"):
-        os.mkdir(f"{wd}/experiments/{vocab_size}")
-        print(f"created directory {wd}/experiments/{vocab_size}")
-    if not os.path.exists(f"{wd}/experiments/{vocab_size}/{l1}"):
-        os.mkdir(f"{wd}/experiments/{vocab_size}/{l1}")
-        print(f"created directory {wd}/experiments/{vocab_size}/{l1}")
+            create_dir(os.path.join(base_results, f"{l1}_{algo}_{vocab_size}"))
+
     for experiment in experiments:
         l2 = experiment[0]
+        analysis_l2_dir = os.path.join(base_analysis, str(vocab_size), f"{l1}_{l2}")
+        create_dir(analysis_l2_dir)
+        create_dir(os.path.join(analysis_l2_dir, "graphs"))
+        create_dir(os.path.join(analysis_l2_dir, "tokenization"))
+
+        experiments_l2_dir = os.path.join(base_experiments, str(vocab_size), f"{l1}_{l2}")
+        create_dir(experiments_l2_dir)
+
         for algo in algorithms:
-            if not os.path.exists(f"{wd}/analysis/{vocab_size}/{l1}_{l2}"):
-                os.mkdir(f"{wd}/analysis/{vocab_size}/{l1}_{l2}")
-                print(f"created directory {wd}/analysis/{vocab_size}/{l1}_{l2}")
-            if not os.path.exists(f"{wd}/analysis/{vocab_size}/{l1}_{l2}/graphs"):
-                os.mkdir(f"{wd}/analysis/{vocab_size}/{l1}_{l2}/graphs")
-                print(f"created directory {wd}/analysis/{vocab_size}/{l1}_{l2}/graphs")
-            if not os.path.exists(f"{wd}/analysis/{vocab_size}/{l1}_{l2}/tokenization"):
-                os.mkdir(f"{wd}/analysis/{vocab_size}/{l1}_{l2}/tokenization")
-                print(f"created directory {wd}/analysis/{vocab_size}/{l1}_{l2}/tokenization")
-            if not os.path.exists(f"{wd}/experiments/{vocab_size}/{l1}_{l2}"):
-                os.mkdir(f"{wd}/experiments/{vocab_size}/{l1}_{l2}")
-                print(f"created directory {wd}/experiments/{vocab_size}/{l1}_{l2}")
             if "SAGE" in algo:
-                if not os.path.exists(f"{wd}/results/{l2}_{algo}_{vocab_size}"):
-                    os.mkdir(f"{wd}/results/{l2}_{algo}_{vocab_size}")
-                    print(f"created directory {wd}/results/{l2}_{algo}_{vocab_size}")
-                if not os.path.exists(f"{wd}/results/{l1}_{l2}_{algo}_{vocab_size}"):
-                    os.mkdir(f"{wd}/results/{l1}_{l2}_{algo}_{vocab_size}")
-                    print(f"created directory {wd}/results/{l1}_{l2}_{algo}_{vocab_size}")
+                create_dir(os.path.join(base_results, f"{l2}_{algo}_{vocab_size}"))
+                create_dir(os.path.join(base_results, f"{l1}_{l2}_{algo}_{vocab_size}"))
 
 def get_experiments(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:

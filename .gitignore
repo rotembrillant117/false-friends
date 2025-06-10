@@ -1,0 +1,31 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment/config files
+.env
+*.env
+
+# Logs and debug
+*.log
+*.out
+
+# PyCharm project settings
+.idea/
+
+# Mac/Linux system files
+.DS_Store
+
+#directories and more
+.data/
+all-words-in-all-languages-main.zip
+#.analysis/

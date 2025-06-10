@@ -155,7 +155,7 @@ def plot_tokenization_cases(num_tokens_diff, algo, l1, l2, word_types, dir):
     
 def plot_average_word_length(case_word_dict, algo, dir, l1, l2):
     """
-    This function plots the average word length of each tokenization category
+    This function plots the average word length and standard deviation of each tokenization category
     :param case_word_dict: a dictionary {tokenization_category: [list_of_words]}
     :param algo: the algo name
     :param dir: directory to save the figure
@@ -163,29 +163,34 @@ def plot_average_word_length(case_word_dict, algo, dir, l1, l2):
     :param l2: language 2
     :return:
     """
-    category_avg_length = []
+    categories = []
+    means = []
+    stds = []
+    
     for category, words in case_word_dict.items():
         word_lengths = [len(w) for w in words]
-        category_avg_length.append((category, np.mean(word_lengths if len(word_lengths) else [0])))
+        categories.append(category)
+        means.append(np.mean(word_lengths) if word_lengths else 0)
+        stds.append(np.std(word_lengths) if word_lengths else 0)
         
     
     fig_save_path = f"{dir}/graphs/avg_word_length_{l1}_{l2}_{algo}.png"
-    title = f"Tokenization Cases - Average Word Length:{l1}, {l2}\nAlgo:{algo}"
+    title = f"Tokenization Cases - Average Word Length\nMean ± Std\n{l1}, {l2}\nAlgo:{algo}"
     
-    plt.figure(figsize=(8, 10))
-    x_axis = [data[0] for data in category_avg_length]
-    y_axis = [data[1] for data in category_avg_length]
-    plt.bar(x_axis, y_axis)
-    plt.xticks(rotation=30, fontsize=12)
+    plt.figure(figsize=(8, 6))
+    x = np.arange(len(categories))
+    plt.bar(x, means, yerr=stds, capsize=5, edgecolor='black')
+    plt.xticks(x, categories, rotation=30, fontsize=12)
     plt.xlabel("Tokenization Case")
     plt.ylabel("Average Word Length")
     plt.title(title, fontsize=15)
+    plt.tight_layout()
     plt.savefig(fig_save_path)
     plt.show()
     
 def plot_average_num_tokens(case_word_tokens_dict, algo, dir, l1, l2):
     """
-    This function plots the number of tokens for each tokenization case
+    This function plots the mean and standard deviation of tokens for each tokenization case
     :param case_word_tokens_dict: a dictionary. Key is tokenization category, value is list of list. Each list looks like
     [word, len(word)]. For the different_splits category, the list looks like [word, len(l1_tokenization[0]), len(l2_tokenization[1]), len(l1_l2_tokenization[2])]
     :param algo: the algo name
@@ -243,7 +248,7 @@ def plot_average_num_tokens(case_word_tokens_dict, algo, dir, l1, l2):
     fig_save_path = f"{dir}/graphs/avg_tokens_{l1}_{l2}_{algo}.png"
     plt.xticks(x, categories)
     plt.ylabel("Number of tokens")
-    plt.title(f"Tokenization Cases\nMean ± Std\n{l1}_{l2}_{algo}")
+    plt.title(f"Tokenization Cases - Average Tokens\nMean ± Std\n{l1}_{l2}_{algo}")
     plt.legend()
     plt.tight_layout()
     plt.savefig(fig_save_path)
@@ -481,15 +486,15 @@ for l1_l2 in experiments_list:
                 else:
                     l2_tokenizer = some_t
         ff_tokenization_cases = analyze_tokenization([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data[l2], l1, l2, cur_algo)
-        # plot_tokenization_cases(ff_tokenization_cases, cur_algo, l1, l2, "ff", f"./analysis/{vocab_size}/{l1_l2}/graphs")
-        # write_tokenization_split([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data[l2], l1, l2, cur_algo,
-        #                          f"./analysis/{vocab_size}/{l1_l2}/tokenization/{cur_algo}.txt")
+        plot_tokenization_cases(ff_tokenization_cases, cur_algo, l1, l2, "ff", f"./analysis/{vocab_size}/{l1_l2}/graphs")
+        write_tokenization_split([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data[l2], l1, l2, cur_algo,
+                                 f"./analysis/{vocab_size}/{l1_l2}/tokenization/{cur_algo}.txt")
         same_words_tokenization_cases = analyze_tokenization([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], same_words[l2], l1, l2, cur_algo)
         # plot_tokenization_cases(same_words_tokenization_cases, cur_algo, l1, l2, "same_words", f"./analysis/{vocab_size}/{l1_l2}/graphs")
 
-        # intrinsic_analysis([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data[l2], word_freq, cur_algo, l1, l2, f"./analysis/{vocab_size}/{l1_l2}")
+        intrinsic_analysis([l1_tokenizer, l2_tokenizer, l1_l2_tokenizer], ff_data[l2], word_freq, cur_algo, l1, l2, f"./analysis/{vocab_size}/{l1_l2}")
         chi_square_test(ff_tokenization_cases, same_words_tokenization_cases, l1, l2, cur_algo)
-        print("########################################################################################################")
+        print("##i######################################################################################################")
         
         
 
